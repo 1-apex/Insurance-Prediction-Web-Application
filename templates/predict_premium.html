@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Predict Insurance Premium</title>
+</head>
+<body>
+    <h2>Enter Your Details</h2>
+    <form action="/predict_premium" method="post"> {% csrf_token %}
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age"><br><br>
+        <label for="diabetes">Diabetes (0 for no, 1 for yes):</label>
+        <input type="number" id="diabetes" name="diabetes"><br><br>
+        <label for="blood_pressure_problems">Blood Pressure Problems (0 for no, 1 for yes):</label>
+        <input type="number" id="blood_pressure_problems" name="blood_pressure_problems"><br><br>
+        <label for="transplants">Any Transplants (0 for no, 1 for yes):</label>
+        <input type="number" id="transplants" name="transplants"><br><br>
+        <label for="chronic_diseases">Any Chronic Diseases (0 for no, 1 for yes):</label>
+        <input type="number" id="chronic_diseases" name="chronic_diseases"><br><br>
+        <label for="height">Height (in cm):</label>
+        <input type="number" id="height" name="height"><br><br>
+        <label for="weight">Weight (in kg):</label>
+        <input type="number" id="weight" name="weight"><br><br>
+        <label for="known_allergies">Known Allergies (0 for no, 1 for yes):</label>
+        <input type="number" id="known_allergies" name="known_allergies"><br><br>
+        <label for="history_of_cancer">History of Cancer in Family (0 for no, 1 for yes):</label>
+        <input type="number" id="history_of_cancer" name="history_of_cancer"><br><br>
+        <label for="num_major_surgeries">Number of Major Surgeries:</label>
+        <input type="number" id="num_major_surgeries" name="num_major_surgeries"><br><br>
+        <button type="submit">Predict Premium</button>
+    </form>
+</body>
+</html>
