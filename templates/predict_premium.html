@@ -2,31 +2,113 @@
 <html>
 <head>
     <title>Predict Insurance Premium</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Enter Your Details</h2>
-    <form action="/predict_premium" method="post"> {% csrf_token %}
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age"><br><br>
-        <label for="diabetes">Diabetes (0 for no, 1 for yes):</label>
-        <input type="number" id="diabetes" name="diabetes"><br><br>
-        <label for="blood_pressure_problems">Blood Pressure Problems (0 for no, 1 for yes):</label>
-        <input type="number" id="blood_pressure_problems" name="blood_pressure_problems"><br><br>
-        <label for="transplants">Any Transplants (0 for no, 1 for yes):</label>
-        <input type="number" id="transplants" name="transplants"><br><br>
-        <label for="chronic_diseases">Any Chronic Diseases (0 for no, 1 for yes):</label>
-        <input type="number" id="chronic_diseases" name="chronic_diseases"><br><br>
-        <label for="height">Height (in cm):</label>
-        <input type="number" id="height" name="height"><br><br>
-        <label for="weight">Weight (in kg):</label>
-        <input type="number" id="weight" name="weight"><br><br>
-        <label for="known_allergies">Known Allergies (0 for no, 1 for yes):</label>
-        <input type="number" id="known_allergies" name="known_allergies"><br><br>
-        <label for="history_of_cancer">History of Cancer in Family (0 for no, 1 for yes):</label>
-        <input type="number" id="history_of_cancer" name="history_of_cancer"><br><br>
-        <label for="num_major_surgeries">Number of Major Surgeries:</label>
-        <input type="number" id="num_major_surgeries" name="num_major_surgeries"><br><br>
-        <button type="submit">Predict Premium</button>
-    </form>
+    <div class="container">
+        <h2>Enter Your Details</h2>
+        <form id="predictionForm" action="/predict_premium" method="post"> {% csrf_token %}
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age">
+            </div>
+
+            <div class="form-group inline-group">
+                <div class="form-half">
+                    <label for="diabetes">Diabetes:</label>
+                    <select id="diabetes" name="diabetes">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-half">
+                    <label for="blood_pressure_problems">Blood Pressure Problems:</label>
+                    <select id="blood_pressure_problems" name="blood_pressure_problems">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group inline-group">
+                <div class="form-half">
+                    <label for="transplants">Any Transplants:</label>
+                    <select id="transplants" name="transplants">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-half">
+                    <label for="chronic_diseases">Any Chronic Diseases:</label>
+                    <select id="chronic_diseases" name="chronic_diseases">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group inline-group">
+                <div class="form-half">
+                    <label for="height">Height (in cm):</label>
+                    <input type="number" id="height" name="height">
+                </div>
+                <div class="form-half">
+                    <label for="weight">Weight (in kg):</label>
+                    <input type="number" id="weight" name="weight">
+                </div>
+            </div>
+
+            <div class="form-group inline-group">
+                <div class="form-half">
+                    <label for="known_allergies">Known Allergies:</label>
+                    <select id="known_allergies" name="known_allergies">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-half">
+                    <label for="history_of_cancer">History of Cancer in Family:</label>
+                    <select id="history_of_cancer" name="history_of_cancer">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="num_major_surgeries">Number of Major Surgeries:</label>
+                <input type="number" id="num_major_surgeries" name="num_major_surgeries">
+            </div>
+
+            <button type="submit">Predict Premium</button>
+        </form>
+    </div>
+
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <h2>Predicted Insurance Premium</h2>
+            <p>The predicted insurance premium is: <strong id="predictedPremium"></strong></p>
+            <button id="closeModal">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Assuming the form submission is handled via AJAX and the prediction is received
+            // For demonstration purposes, let's mock the prediction result
+            const predictedPremium = "$500"; // This should be replaced by actual AJAX response data
+
+            document.getElementById('predictedPremium').textContent = predictedPremium;
+            document.getElementById('resultModal').style.display = 'flex';
+            document.querySelector('.container').classList.add('blur');
+        });
+
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('resultModal').style.display = 'none';
+            document.querySelector('.container').classList.remove('blur');
+        });
+    </script>
 </body>
 </html>
