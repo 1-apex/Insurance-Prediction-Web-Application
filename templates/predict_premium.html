@@ -2,29 +2,137 @@
 <html>
 <head>
     <title>Predict Insurance Premium</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            transition: filter 0.3s ease;
+            position: relative;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .inline-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-half {
+            width: 48%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4a90e2;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357ab8;
+        }
+
+        .modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        .blur {
+            filter: blur(5px);
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Enter Your Details</h2>
+    <div class="container {% if predicted_premium %}blur{% endif %}">
+        <h2>INSURANCE MODEL</h2>
         <form id="predictionForm" action="/predict_premium" method="post"> {% csrf_token %}
             <div class="form-group">
                 <label for="age">Age:</label>
-                <input type="number" id="age" name="age">
+                <input type="number" id="age" name="age" required>
             </div>
 
             <div class="form-group inline-group">
                 <div class="form-half">
                     <label for="diabetes">Diabetes:</label>
-                    <select id="diabetes" name="diabetes">
-                        <option value="0">No</option>
+                    <select id="diabetes" name="diabetes" required>
+                        <option value="0" selected>No</option>
                         <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="form-half">
                     <label for="blood_pressure_problems">Blood Pressure Problems:</label>
-                    <select id="blood_pressure_problems" name="blood_pressure_problems">
-                        <option value="0">No</option>
+                    <select id="blood_pressure_problems" name="blood_pressure_problems" required>
+                        <option value="0" selected>No</option>
                         <option value="1">Yes</option>
                     </select>
                 </div>
@@ -33,15 +141,15 @@
             <div class="form-group inline-group">
                 <div class="form-half">
                     <label for="transplants">Any Transplants:</label>
-                    <select id="transplants" name="transplants">
-                        <option value="0">No</option>
+                    <select id="transplants" name="transplants" required>
+                        <option value="0" selected>No</option>
                         <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="form-half">
                     <label for="chronic_diseases">Any Chronic Diseases:</label>
-                    <select id="chronic_diseases" name="chronic_diseases">
-                        <option value="0">No</option>
+                    <select id="chronic_diseases" name="chronic_diseases" required>
+                        <option value="0" selected>No</option>
                         <option value="1">Yes</option>
                     </select>
                 </div>
@@ -50,26 +158,26 @@
             <div class="form-group inline-group">
                 <div class="form-half">
                     <label for="height">Height (in cm):</label>
-                    <input type="number" id="height" name="height">
+                    <input type="number" id="height" name="height" required>
                 </div>
                 <div class="form-half">
                     <label for="weight">Weight (in kg):</label>
-                    <input type="number" id="weight" name="weight">
+                    <input type="number" id="weight" name="weight" required>
                 </div>
             </div>
 
             <div class="form-group inline-group">
                 <div class="form-half">
                     <label for="known_allergies">Known Allergies:</label>
-                    <select id="known_allergies" name="known_allergies">
-                        <option value="0">No</option>
+                    <select id="known_allergies" name="known_allergies" required>
+                        <option value="0" selected>No</option>
                         <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="form-half">
                     <label for="history_of_cancer">History of Cancer in Family:</label>
-                    <select id="history_of_cancer" name="history_of_cancer">
-                        <option value="0">No</option>
+                    <select id="history_of_cancer" name="history_of_cancer" required>
+                        <option value="0" selected>No</option>
                         <option value="1">Yes</option>
                     </select>
                 </div>
@@ -77,35 +185,25 @@
 
             <div class="form-group">
                 <label for="num_major_surgeries">Number of Major Surgeries:</label>
-                <input type="number" id="num_major_surgeries" name="num_major_surgeries">
+                <input type="number" id="num_major_surgeries" name="num_major_surgeries" required>
             </div>
 
             <button type="submit">Predict Premium</button>
         </form>
     </div>
 
+    {% if predicted_premium %}
     <div class="modal" id="resultModal">
         <div class="modal-content">
             <h2>Predicted Insurance Premium</h2>
-            <p>The predicted insurance premium is: <strong id="predictedPremium"></strong></p>
+            <p>The predicted insurance premium is: <br><strong id="predictedPremium">Rs.{{ predicted_premium }}</strong></p>
             <button id="closeModal">Close</button>
         </div>
     </div>
+    {% endif %}
 
     <script>
-        document.getElementById('predictionForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            // Assuming the form submission is handled via AJAX and the prediction is received
-            // For demonstration purposes, let's mock the prediction result
-            const predictedPremium = "$500"; // This should be replaced by actual AJAX response data
-
-            document.getElementById('predictedPremium').textContent = predictedPremium;
-            document.getElementById('resultModal').style.display = 'flex';
-            document.querySelector('.container').classList.add('blur');
-        });
-
-        document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('closeModal').addEventListener('click', function () {
             document.getElementById('resultModal').style.display = 'none';
             document.querySelector('.container').classList.remove('blur');
         });

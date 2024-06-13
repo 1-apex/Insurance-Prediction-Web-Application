@@ -1,11 +1,6 @@
-# views.py in your Django app
-from django.http import HttpResponse
 from django.shortcuts import render
 import joblib
 import numpy as np
-
-def index(request):
-    return render(request, 'predict_premium.html')
 
 def predict_premium(request):
     if request.method == 'POST':
@@ -18,21 +13,25 @@ def predict_premium(request):
         weight = int(request.POST.get('weight'))
         known_allergies = int(request.POST.get('known_allergies'))
         history_of_cancer = int(request.POST.get('history_of_cancer'))
-        num_major_surgeries = int(request.POST.get('num_major_surgeries')) 
+        num_major_surgeries = int(request.POST.get('num_major_surgeries'))
 
         # Load the scaler and model
-        scaler = joblib.load('C:/Users/prath/PycharmProjects/Insurance/Insurance/model/scaler.pkl')
-        model = joblib.load('C:/Users/prath/PycharmProjects/Insurance/Insurance/model/insurance_premium_model.pkl')
+        scaler = joblib.load('C:/Users/prath/PycharmProjects/Insurance/Insurance-Prediction-Web-Application/Insurance/model/scaler.pkl')
+        
+        model = joblib.load('C:/Users/prath/PycharmProjects/Insurance/Insurance-Prediction-Web-Application/Insurance/model/insurance_premium_model.pkl')
 
         # Preprocess the user input
         user_data = np.array([[age, diabetes, blood_pressure_problems, transplants, chronic_diseases, 
                                height, weight, known_allergies, history_of_cancer, num_major_surgeries]])
+        print('user_data : ', user_data)
         user_data_scaled = scaler.transform(user_data)
+        
+        print("user_data_scaled :", user_data_scaled)
 
         # Make the prediction
         predicted_premium = model.predict(user_data_scaled)
         predicted_premium = round(predicted_premium[0], 2)
 
-        return render(request, 'result.html', {'predicted_premium': predicted_premium})
+        return render(request, 'predict_premium.html', {'predicted_premium': predicted_premium})
 
     return render(request, 'predict_premium.html')
